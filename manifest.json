@@ -1,7 +1,8 @@
 {
   "name": "GYM TRACKER",
   "short_name": "GymTracker",
-  "start_url": "/",
+  "start_url": "/GYM-TRACKER/",
+  "scope": "/GYM-TRACKER/",
   "display": "standalone",
   "background_color": "#0f0f0f",
   "theme_color": "#00e676",
