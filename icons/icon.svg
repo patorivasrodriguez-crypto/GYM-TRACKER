@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Gym Tracker">
+  <rect width="512" height="512" rx="96" fill="#0f0f0f"/>
+  <rect x="104" y="208" width="304" height="96" rx="24" fill="#1a1a1a" stroke="#00e676" stroke-width="16"/>
+  <rect x="56" y="184" width="40" height="144" rx="12" fill="#00e676"/>
+  <rect x="416" y="184" width="40" height="144" rx="12" fill="#00e676"/>
+</svg>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GymTracker">
+  <meta name="theme-color" content="#00e676">
+  <title>GYM TRACKER</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>GYM TRACKER</h1>
+  </header>
+
+  <main id="app-content">
+    <section id="view-home" class="view active">
+      <div class="card settings-card">
+        <h2>Ajustes</h2>
+        <label for="weight-unit">Unidad de peso</label>
+        <select id="weight-unit" aria-label="Unidad de peso global">
+          <option value="kg">kg</option>
+          <option value="lbs">lbs</option>
+        </select>
+      </div>
+      <div class="card">
+        <h2>Rutinas guardadas</h2>
+        <div id="dashboard-routines" class="stack"></div>
+      </div>
+    </section>
+
+    <section id="view-active" class="view">
+      <div class="card">
+        <h2>Rutina activa</h2>
+        <form id="routine-form" novalidate>
+          <label for="routine-name">Nombre de la rutina</label>
+          <input id="routine-name" type="text" placeholder="Push Day" required>
+
+          <label for="routine-date">Fecha</label>
+          <input id="routine-date" type="date" required>
+
+          <label for="routine-notes">Notas generales</label>
+          <textarea id="routine-notes" rows="3" placeholder="Opcional"></textarea>
+
+          <div id="routine-exercises" class="stack"></div>
+
+          <div class="button-row">
+            <button type="button" id="add-exercise-btn" class="secondary">+ Ejercicio</button>
+            <button type="submit" id="save-routine-btn">Guardar rutina</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="view-history" class="view">
+      <div class="card">
+        <h2>Historial</h2>
+        <div id="history-list" class="stack"></div>
+      </div>
+      <div class="card" id="history-detail-card">
+        <h2>Detalle de sesión</h2>
+        <div id="history-detail">Selecciona una sesión para ver detalles.</div>
+      </div>
+    </section>
+
+    <section id="view-exercises" class="view">
+      <div class="card">
+        <h2>Biblioteca de ejercicios</h2>
+
+        <label for="exercise-filter">Filtrar por grupo muscular</label>
+        <select id="exercise-filter">
+          <option value="all">Todos</option>
+        </select>
+
+        <div id="exercise-library-list" class="stack"></div>
+      </div>
+
+      <div class="card">
+        <h2>Crear ejercicio personalizado</h2>
+        <form id="custom-exercise-form">
+          <label for="custom-exercise-name">Nombre</label>
+          <input id="custom-exercise-name" type="text" required>
+
+          <label for="custom-exercise-group">Grupo muscular</label>
+          <select id="custom-exercise-group" required></select>
+
+          <label for="custom-exercise-notes">Notas</label>
+          <textarea id="custom-exercise-notes" rows="2" placeholder="Opcional"></textarea>
+
+          <button type="submit">Guardar ejercicio</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div id="rest-timer" class="timer hidden" aria-live="polite"></div>
+
+  <button id="new-session-fab" class="fab" aria-label="Nueva sesión">+</button>
+
+  <nav class="bottom-nav" aria-label="Navegación principal">
+    <button class="nav-item active" data-view="home">🏠<span>Inicio</span></button>
+    <button class="nav-item" data-view="active">📋<span>Rutina</span></button>
+    <button class="nav-item" data-view="history">📅<span>Historial</span></button>
+    <button class="nav-item" data-view="exercises">💪<span>Ejercicios</span></button>
+  </nav>
+
+  <datalist id="exercise-name-options"></datalist>
+
+  <script src="js/db.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
