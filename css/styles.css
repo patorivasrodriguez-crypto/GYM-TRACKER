@@ -87,6 +87,10 @@ body {
   margin-bottom: 20px;
 }
 
+.exercise-card.is-collapsed {
+  padding-bottom: 16px;
+}
+
 .exercise-item,
 .session-item {
   padding: 14px;
@@ -222,14 +226,13 @@ button:focus {
 .set-row .set-title span {
   color: var(--accent);
   font-weight: 700;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .checkbox-wrap {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 10px;
+  justify-content: center;
   text-transform: none;
   letter-spacing: normal;
   color: var(--text);
@@ -238,7 +241,7 @@ button:focus {
 
 .checkbox-wrap input {
   width: auto;
-  min-height: auto;
+  min-height: 36px;
 }
 
 .info-pill {
@@ -260,6 +263,7 @@ button:focus {
 input[data-action="exercise-field"][data-field="name"] {
   font-size: 18px;
   padding: 16px;
+  font-weight: 600;
 }
 
 select[data-action="exercise-field"][data-field="muscleGroup"] {
@@ -275,6 +279,171 @@ input[data-action="set-field"][data-field="notes"] {
 button[data-action="add-set"] {
   padding: 14px 20px;
   font-size: 15px;
+}
+
+.exercise-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.exercise-card-heading {
+  min-width: 0;
+  flex: 1;
+}
+
+.exercise-card-name {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.exercise-card-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.exercise-card-group {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.series-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.exercise-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.chevron-btn {
+  font-size: 1rem;
+}
+
+.exercise-card-details {
+  margin-top: 12px;
+  display: grid;
+  gap: 12px;
+  max-height: 5000px;
+  opacity: 1;
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.25s ease, margin-top 0.25s ease;
+}
+
+.exercise-card.is-collapsed .exercise-card-details {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+
+.set-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.set-toggle-advanced {
+  width: auto;
+  min-height: 36px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
+
+.set-grid-basic,
+.set-grid-advanced {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.set-grid-basic > div,
+.set-grid-advanced > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox-cell {
+  border: 1px solid rgba(255, 0, 60, 0.2);
+  border-radius: 4px;
+  min-height: 52px;
+  gap: 8px;
+}
+
+.checkbox-cell span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.checkbox-wrap input[type="checkbox"] {
+  appearance: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 2px solid var(--accent);
+  min-height: 36px;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  background: #ffffff;
+}
+
+.checkbox-wrap input[type="checkbox"]:checked {
+  border-color: #00c853;
+  background: #00c853;
+}
+
+.checkbox-wrap input[type="checkbox"]:checked::after {
+  content: '✓';
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.set-advanced-fields {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.25s ease, margin-top 0.25s ease;
+}
+
+.set-advanced-fields.is-visible {
+  max-height: 420px;
+  opacity: 1;
+  margin-top: 10px;
+}
+
+.set-notes-field {
+  grid-column: 1 / -1;
+}
+
+.add-set-btn {
+  width: 100%;
 }
 
 #save-routine-btn,
