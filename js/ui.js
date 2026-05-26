@@ -257,7 +257,27 @@
           <article class="exercise-item">
             <h3>${safeValue(exercise.name)}</h3>
             <p class="meta">${safeValue(exercise.muscleGroup)}${exercise.notes ? ` · ${safeValue(exercise.notes)}` : ''}</p>
-            ${exercise.isCustom ? `<button type="button" class="danger" data-action="delete-custom-exercise" data-exercise-id="${exercise.id}">Eliminar personalizado</button>` : '<p class="small">Predefinido</p>'}
+            <div class="button-row">
+              <button type="button" class="secondary" data-action="toggle-edit-exercise" data-exercise-id="${exercise.id}">✏️ Editar</button>
+              <button type="button" class="danger" data-action="delete-exercise" data-exercise-id="${exercise.id}">🗑️ Borrar</button>
+            </div>
+            <form class="exercise-edit-form hidden" data-action="exercise-edit-form" data-exercise-id="${exercise.id}">
+              <label>Nombre</label>
+              <input type="text" name="name" value="${safeValue(exercise.name)}" required>
+
+              <label>Grupo muscular</label>
+              <select name="muscleGroup">
+                ${getMuscleOptions(muscleGroups, exercise.muscleGroup)}
+              </select>
+
+              <label>Notas</label>
+              <textarea name="notes" rows="2" placeholder="Opcional">${safeValue(exercise.notes || '')}</textarea>
+
+              <div class="button-row">
+                <button type="submit">Guardar cambios</button>
+                <button type="button" class="secondary" data-action="cancel-edit-exercise">Cancelar</button>
+              </div>
+            </form>
           </article>
         `
       )
@@ -273,7 +293,10 @@
     }
 
     timer.classList.remove('hidden');
-    timer.textContent = `Descanso ${timerState.remaining}s`;
+    timer.innerHTML = `
+      <div class="timer-value">Descanso ${timerState.remaining}s</div>
+      <div class="timer-hint">toca para cancelar</div>
+    `;
   }
 
   function toggleView(activeView) {
@@ -392,10 +415,43 @@
     });
 
     document.getElementById('exercise-library-list').addEventListener('click', (event) => {
-      const button = event.target.closest('button[data-action="delete-custom-exercise"]');
-      if (button) {
-        handlers.deleteCustomExercise(button.dataset.exerciseId);
+      const button = event.target.closest('button');
+      if (!button) {
+        return;
       }
+
+      if (button.dataset.action === 'delete-exercise') {
+        handlers.deleteExercise(button.dataset.exerciseId);
+      }
+
+      if (button.dataset.action === 'toggle-edit-exercise') {
+        const article = button.closest('.exercise-item');
+        const form = article?.querySelector('.exercise-edit-form');
+        if (form) {
+          form.classList.toggle('hidden');
+        }
+      }
+
+      if (button.dataset.action === 'cancel-edit-exercise') {
+        const form = button.closest('.exercise-edit-form');
+        if (form) {
+          form.classList.add('hidden');
+        }
+      }
+    });
+
+    document.getElementById('exercise-library-list').addEventListener('submit', (event) => {
+      const form = event.target.closest('form[data-action="exercise-edit-form"]');
+      if (!form) {
+        return;
+      }
+
+      event.preventDefault();
+      handlers.updateExercise(form.dataset.exerciseId, {
+        name: form.querySelector('[name="name"]').value,
+        muscleGroup: form.querySelector('[name="muscleGroup"]').value,
+        notes: form.querySelector('[name="notes"]').value
+      });
     });
 
     document.getElementById('custom-exercise-form').addEventListener('submit', (event) => {

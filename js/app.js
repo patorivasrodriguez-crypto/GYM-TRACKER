@@ -251,8 +251,20 @@
     render();
   }
 
-  function deleteCustomExercise(exerciseId) {
-    DB.deleteCustomExercise(exerciseId);
+  function deleteExercise(exerciseId) {
+    if (!confirm('¿Seguro que deseas borrar este ejercicio?')) {
+      return;
+    }
+    DB.deleteExercise(exerciseId);
+    render();
+  }
+
+  function updateExercise(exerciseId, payload) {
+    if (!payload.name || !payload.name.trim()) {
+      alert('El nombre del ejercicio es obligatorio.');
+      return;
+    }
+    DB.updateExercise(exerciseId, payload);
     render();
   }
 
@@ -318,10 +330,18 @@
       deleteSession,
       changeExerciseFilter,
       addCustomExercise,
-      deleteCustomExercise,
+      deleteExercise,
+      updateExercise,
       getLatestExerciseReference,
       getPreviousBestWeight,
       changeWeightUnit
+    });
+    const restTimer = document.getElementById('rest-timer');
+    restTimer.addEventListener('click', () => {
+      stopTimer();
+      if (navigator.vibrate) {
+        navigator.vibrate(0);
+      }
     });
     render();
     registerServiceWorker();
