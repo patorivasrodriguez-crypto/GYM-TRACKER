@@ -98,7 +98,7 @@ body {
 
 .set-row {
   background: var(--surface2);
-  padding: 16px;
+  padding: 12px;
   margin-bottom: 16px;
 }
 
@@ -115,52 +115,48 @@ p {
 
 label {
   display: block;
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   color: var(--text-muted);
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 
-/* === INPUTS GLOBALES ===
-   - word-break y overflow-wrap garantizan que el texto largo
-     siempre rompa línea en lugar de cortarse o desbordarse.
-   - white-space: normal permite el salto de línea visual.
-   - height: auto + min-height permite que el campo crezca con el contenido.
-*/
+/* === INPUTS GLOBALES === */
 input,
 select,
 textarea {
   width: 100%;
-  min-height: 52px;
+  min-height: 48px;
   height: auto;
   border-radius: 4px;
   border: 1px solid var(--border);
   background: #ffffff;
   color: var(--text);
-  padding: 14px 12px;
+  padding: 12px 10px;
   font-size: 16px;
   font-family: inherit;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   min-width: 0;
-  /* texto siempre visible */
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  white-space: normal;
-  overflow: visible;
 }
 
-/* textarea: scroll vertical si es muy largo */
 textarea {
   resize: vertical;
   min-height: 60px;
 }
 
-/* select no necesita wrap */
-select {
-  white-space: normal;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* === INPUTS DENTRO DE GRIDS DE SERIES ===
+   En portrait, los campos son angostos — reducimos tamaño de fuente
+   y padding para que el contenido siempre quepa visible.
+*/
+.set-grid-basic input,
+.set-grid-basic select,
+.set-grid-advanced input,
+.set-grid-advanced select {
+  font-size: 14px;
+  padding: 8px 6px;
+  min-height: 44px;
+  text-align: center;
 }
 
 button {
@@ -301,6 +297,7 @@ select[data-action="exercise-field"][data-field="muscleGroup"] {
 input[data-action="set-field"][data-field="notes"] {
   min-height: 40px;
   font-size: 14px;
+  text-align: left;
 }
 
 button[data-action="add-set"] {
@@ -308,25 +305,36 @@ button[data-action="add-set"] {
   font-size: 15px;
 }
 
-/* === GRID DE SERIES ===
-   Básico: Reps | Peso | ✓
-   El campo Tempo (avanzado) va solo en su propia fila para tener espacio completo.
+/* === GRID BÁSICO: Reps | Peso | ✓
+   En portrait (~360px) cada columna queda ~100px — suficiente con font 14px
 */
 .set-grid-basic {
   display: grid;
-  gap: 10px;
-  grid-template-columns: 1fr 1fr 56px;
+  gap: 8px;
+  grid-template-columns: 1fr 1fr 52px;
 }
 
-/* Avanzado: Tempo ocupa toda la fila, RIR y RPE comparten la siguiente */
+/* === GRID AVANZADO
+   Tempo ocupa fila completa para mostrar "3-1-2-0" sin cortar.
+   RIR y RPE comparten la siguiente fila.
+   Notas ocupa fila completa.
+*/
 .set-grid-advanced {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   grid-template-columns: 1fr 1fr;
 }
 
-/* Tempo ocupa el ancho completo */
 .set-grid-advanced [data-field="tempo"] {
+  grid-column: 1 / -1;
+}
+
+.set-grid-advanced [data-field="tempo"] input {
+  text-align: left;
+  letter-spacing: 1px;
+}
+
+.set-notes-field {
   grid-column: 1 / -1;
 }
 
@@ -340,12 +348,12 @@ button[data-action="add-set"] {
 .checkbox-cell {
   border: 1px solid rgba(255, 0, 60, 0.2);
   border-radius: 4px;
-  min-height: 52px;
-  gap: 8px;
+  min-height: 44px;
+  gap: 4px;
 }
 
 .checkbox-cell span {
-  font-size: 12px;
+  font-size: 10px;
   color: var(--text-muted);
 }
 
@@ -387,10 +395,6 @@ button[data-action="add-set"] {
   max-height: 600px;
   opacity: 1;
   margin-top: 10px;
-}
-
-.set-notes-field {
-  grid-column: 1 / -1;
 }
 
 .add-set-btn {
@@ -601,6 +605,17 @@ hr {
 
 ::-webkit-scrollbar-thumb {
   background: var(--accent);
+}
+
+@media (min-width: 600px) {
+  /* En horizontal o tablets, los campos de serie pueden ser más grandes */
+  .set-grid-basic input,
+  .set-grid-basic select,
+  .set-grid-advanced input,
+  .set-grid-advanced select {
+    font-size: 16px;
+    padding: 12px 10px;
+  }
 }
 
 @media (min-width: 860px) {
