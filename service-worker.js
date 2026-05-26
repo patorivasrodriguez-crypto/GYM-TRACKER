@@ -1,13 +1,14 @@
-const CACHE_NAME = 'gym-tracker-v1';
+const CACHE_NAME = 'gym-tracker-v2';
+const BASE = '/GYM-TRACKER';
 const ASSETS = [
-  '/',
-  'index.html',
-  'css/styles.css',
-  'js/app.js',
-  'js/db.js',
-  'js/ui.js',
-  'manifest.json',
-  'icons/icon.svg'
+  BASE + '/',
+  BASE + '/index.html',
+  BASE + '/css/styles.css',
+  BASE + '/js/app.js',
+  BASE + '/js/db.js',
+  BASE + '/js/ui.js',
+  BASE + '/manifest.json',
+  BASE + '/icons/icon.svg'
 ];
 
 self.addEventListener('install', (event) => {
