@@ -90,19 +90,6 @@
       parsed.exercises = Array.isArray(parsed.exercises) ? parsed.exercises : [];
       parsed.sessions = Array.isArray(parsed.sessions) ? parsed.sessions : [];
 
-      const names = new Set(parsed.exercises.map((exercise) => exercise.name.toLowerCase()));
-      PREDEFINED_EXERCISES.forEach(([name, muscleGroup]) => {
-        if (!names.has(name.toLowerCase())) {
-          parsed.exercises.push({
-            id: makeId('ex'),
-            name,
-            muscleGroup,
-            notes: '',
-            isCustom: false
-          });
-        }
-      });
-
       return parsed;
     } catch (error) {
       console.error('Error leyendo almacenamiento local', error);
@@ -190,11 +177,23 @@
     });
   }
 
-  function deleteCustomExercise(exerciseId) {
+  function deleteExercise(exerciseId) {
     return withState((state) => {
-      state.exercises = state.exercises.filter(
-        (exercise) => !(exercise.id === exerciseId && exercise.isCustom)
-      );
+      state.exercises = state.exercises.filter((exercise) => exercise.id !== exerciseId);
+      return true;
+    });
+  }
+
+  function updateExercise(exerciseId, data) {
+    return withState((state) => {
+      const exercise = state.exercises.find((item) => item.id === exerciseId);
+      if (!exercise) {
+        return false;
+      }
+
+      exercise.name = (data.name || '').trim();
+      exercise.muscleGroup = data.muscleGroup;
+      exercise.notes = (data.notes || '').trim();
       return true;
     });
   }
@@ -244,7 +243,8 @@
     upsertSession,
     deleteSession,
     addCustomExercise,
-    deleteCustomExercise,
+    deleteExercise,
+    updateExercise,
     findLatestExerciseStats,
     makeId
   };
