@@ -40,8 +40,19 @@
     ['Cardio (Elíptica)', 'Cardio']
   ];
 
+  let fallbackCounter = 0;
+  function secureSuffix() {
+    if (window.crypto && window.crypto.getRandomValues) {
+      const bytes = new Uint8Array(4);
+      window.crypto.getRandomValues(bytes);
+      return Array.from(bytes, (value) => value.toString(16).padStart(2, '0')).join('');
+    }
+    fallbackCounter += 1;
+    return `${Date.now().toString(16)}${fallbackCounter.toString(16)}`;
+  }
+
   function makeId(prefix) {
-    return `${prefix}_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`;
+    return `${prefix}_${Date.now()}_${secureSuffix()}`;
   }
 
   function clone(value) {
