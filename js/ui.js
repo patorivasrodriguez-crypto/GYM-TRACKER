@@ -117,7 +117,7 @@
                   (set, setIndex) => `
                     <article class="set-row">
                       <div class="set-title">
-                        <span>Serie ${setIndex + 1}</span>
+                        <span>#${setIndex + 1}</span>
                         <button type="button" class="danger" data-action="remove-set" data-exercise-id="${exercise.id}" data-set-index="${setIndex}">×</button>
                       </div>
 

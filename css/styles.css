@@ -62,7 +62,7 @@ body {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 14px;
+  padding: 20px;
 }
 
 h2,
@@ -74,21 +74,33 @@ p {
 
 label {
   display: block;
-  margin: 10px 0 6px;
-  font-size: 0.95rem;
-  color: var(--muted);
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: #aaa;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 input,
 select,
-textarea,
+textarea {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 10px;
+  border: 1px solid #444;
+  background: #131313;
+  color: var(--text);
+  padding: 14px 16px;
+  font-size: 16px;
+  font-family: inherit;
+  transition: 0.2s ease;
+}
+
 button {
   width: 100%;
   min-height: 44px;
   border-radius: 10px;
   border: 1px solid var(--border);
-  background: #131313;
-  color: var(--text);
   padding: 10px 12px;
   font: inherit;
   transition: 0.2s ease;
@@ -127,7 +139,7 @@ button.ghost {
 
 .stack {
   display: grid;
-  gap: 10px;
+  gap: 16px;
 }
 
 .button-row {
@@ -147,6 +159,17 @@ button.ghost {
   background: #151515;
 }
 
+.exercise-card {
+  border: 1px solid #2a2a2a;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.exercise-card > .set-title {
+  margin-bottom: 16px;
+}
+
 .session-item .meta,
 .exercise-item .meta,
 .small {
@@ -156,7 +179,7 @@ button.ghost {
 
 .row {
   display: grid;
-  gap: 8px;
+  gap: 16px;
 }
 
 .row.two {
@@ -171,18 +194,24 @@ button.ghost {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 
-.set-title span {
+.set-row .set-title span {
   font-weight: 600;
+  font-size: 18px;
+  color: var(--accent);
 }
 
 .checkbox-wrap {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 6px;
+  gap: 10px;
+  margin-top: 10px;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text);
+  font-size: 14px;
 }
 
 .checkbox-wrap input {
@@ -200,6 +229,54 @@ button.ghost {
   display: inline-block;
 }
 
+.set-row {
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.set-row:last-child {
+  margin-bottom: 0;
+}
+
+.set-row .row > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.set-row input,
+.set-row select,
+.set-row textarea {
+  min-height: 48px;
+  font-size: 15px;
+}
+
+input[data-action="exercise-field"][data-field="name"] {
+  font-size: 18px;
+  padding: 16px;
+}
+
+select[data-action="exercise-field"][data-field="muscleGroup"] {
+  min-height: 52px;
+  font-size: 16px;
+}
+
+input[data-action="set-field"][data-field="notes"] {
+  min-height: 40px;
+  font-size: 14px;
+}
+
+button[data-action="add-set"] {
+  padding: 14px 20px;
+  font-size: 15px;
+}
+
+#save-routine-btn,
+#add-exercise-btn {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+}
+
 .timer {
   position: fixed;
   top: 70px;
@@ -209,9 +286,11 @@ button.ghost {
   border: 1px solid var(--accent);
   color: var(--accent);
   border-radius: 999px;
-  padding: 10px 16px;
+  padding: 18px 28px;
   z-index: 30;
   font-weight: 600;
+  font-size: 48px;
+  text-align: center;
 }
 
 .hidden {
