@@ -5,7 +5,11 @@
     selectedHistorySessionId: null,
     activeSession: null,
     timerState: null,
-    timerInterval: null
+    timerInterval: null,
+    routineUi: {
+      collapsedByExerciseId: {},
+      advancedByExerciseId: {}
+    }
   };
 
   function todayISODate() {
@@ -61,6 +65,18 @@
   }
 
   function getSnapshot() {
+    const exerciseIds = new Set((state.activeSession?.exercises || []).map((exercise) => exercise.id));
+    Object.keys(state.routineUi.collapsedByExerciseId).forEach((exerciseId) => {
+      if (!exerciseIds.has(exerciseId)) {
+        delete state.routineUi.collapsedByExerciseId[exerciseId];
+      }
+    });
+    Object.keys(state.routineUi.advancedByExerciseId).forEach((exerciseId) => {
+      if (!exerciseIds.has(exerciseId)) {
+        delete state.routineUi.advancedByExerciseId[exerciseId];
+      }
+    });
+
     const base = DB.getState();
     return {
       sessions: DB.getSessionsSorted(),
@@ -71,7 +87,8 @@
       activeView: state.activeView,
       filterGroup: state.filterGroup,
       selectedHistorySessionId: state.selectedHistorySessionId,
-      timerState: state.timerState
+      timerState: state.timerState,
+      routineUi: state.routineUi
     };
   }
 
@@ -86,6 +103,10 @@
 
   function createSession() {
     state.activeSession = createSessionDraft();
+    state.routineUi = {
+      collapsedByExerciseId: {},
+      advancedByExerciseId: {}
+    };
     state.activeView = 'active';
     render();
   }
@@ -96,6 +117,10 @@
       return;
     }
     state.activeSession = createSessionDraft(session);
+    state.routineUi = {
+      collapsedByExerciseId: {},
+      advancedByExerciseId: {}
+    };
     state.activeView = 'active';
     render();
   }
@@ -124,6 +149,8 @@
 
   function removeExercise(exerciseId) {
     state.activeSession.exercises = state.activeSession.exercises.filter((item) => item.id !== exerciseId);
+    delete state.routineUi.collapsedByExerciseId[exerciseId];
+    delete state.routineUi.advancedByExerciseId[exerciseId];
     if (!state.activeSession.exercises.length) {
       state.activeSession.exercises.push(createExercise());
     }
@@ -146,9 +173,35 @@
       return;
     }
     exercise.sets = exercise.sets.filter((_, index) => index !== setIndex);
+    const advancedState = state.routineUi.advancedByExerciseId[exerciseId] || {};
+    const shiftedState = {};
+    Object.keys(advancedState).forEach((key) => {
+      const index = Number(key);
+      if (index < setIndex) {
+        shiftedState[index] = advancedState[key];
+      } else if (index > setIndex) {
+        shiftedState[index - 1] = advancedState[key];
+      }
+    });
+    state.routineUi.advancedByExerciseId[exerciseId] = shiftedState;
     if (!exercise.sets.length) {
       exercise.sets.push(createSetFromPrevious(null));
     }
+    render();
+  }
+
+  function toggleExerciseCollapsed(exerciseId) {
+    const current = Boolean(state.routineUi.collapsedByExerciseId[exerciseId]);
+    state.routineUi.collapsedByExerciseId[exerciseId] = !current;
+    render();
+  }
+
+  function toggleSetAdvanced(exerciseId, setIndex) {
+    if (!state.routineUi.advancedByExerciseId[exerciseId]) {
+      state.routineUi.advancedByExerciseId[exerciseId] = {};
+    }
+    const current = Boolean(state.routineUi.advancedByExerciseId[exerciseId][setIndex]);
+    state.routineUi.advancedByExerciseId[exerciseId][setIndex] = !current;
     render();
   }
 
@@ -216,6 +269,10 @@
     state.activeView = 'home';
     state.selectedHistorySessionId = savedSessionId || null;
     state.activeSession = createSessionDraft();
+    state.routineUi = {
+      collapsedByExerciseId: {},
+      advancedByExerciseId: {}
+    };
     render();
   }
 
@@ -323,6 +380,8 @@
       removeExercise,
       addSet,
       removeSet,
+      toggleExerciseCollapsed,
+      toggleSetAdvanced,
       updateSetField,
       toggleSetCompleted,
       saveActiveSession,
